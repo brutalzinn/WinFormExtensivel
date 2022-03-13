@@ -12,25 +12,34 @@ namespace WinFormExtensivel.Plugins
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class Datum
     {
-        public string id { get; set; }
-        public string type { get; set; }
-        public string label { get; set; }
-        public string @default { get; set; }
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
+
+        [JsonPropertyName("label")]
+        public string Label { get; set; }
+
+        [JsonPropertyName("default")]
+        public string Default { get; set; }
+
         public Control ObterControle()
         {
-            switch (this.type)
+            switch (this.Type)
             {
                 case "button":
                     return new Button()
                     {
-                        Name = this.id,
-                        Text = this.label,
+                        Name = this.Id,
+                        Text = this.Label,
                         AutoSize = true
                     };
                 case "text":
                     var tlp = new TableLayoutPanel();
-                    tlp.Controls.Add(new Label() { Text = this.label, AutoSize = true });
-                    tlp.Controls.Add(new TextBox() { Dock = DockStyle.Fill,Text = this.@default, Tag = this });
+                    tlp.Tag = this;
+                    tlp.Controls.Add(new Label() { Text = this.Label, AutoSize = true });
+                    tlp.Controls.Add(new TextBox() { Name= this.Id, Dock = DockStyle.Fill, Text = this.Default });
                     return tlp;
                 default:
                     return null;
@@ -41,29 +50,46 @@ namespace WinFormExtensivel.Plugins
 
     public class Action
     {
-        public string id { get; set; }
-        public string name { get; set; }
-        public string prefix { get; set; }
-        public string type { get; set; }
-        public bool tryInline { get; set; }
-        public string format { get; set; }
-        public List<Datum> data { get; set; }
-        public bool isForm { get; set; }
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("prefix")]
+        public string Prefix { get; set; }
+
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
+
+        [JsonPropertyName("tryInline")]
+        public bool TryInline { get; set; }
+
+        [JsonPropertyName("isForm")]
+        public bool IsForm { get; set; }
+
+        [JsonPropertyName("format")]
+        public string Format { get; set; }
+
+        [JsonPropertyName("data")]
+        public List<Datum> Data { get; set; }
+
 
         public Control ObterControle()
         {
-            switch (this.type)
+            switch (this.Type)
             {
                 case "button":
                     return new Button()
                     {
-                        Name = this.id,
-                        Text = this.name,
-                        AutoSize = true
+                        Name = this.Id,
+                        Text = this.Name,
+                        AutoSize = true,
+                        Dock = DockStyle.Fill
                     };
                 case "text":
                     var tlp = new TableLayoutPanel();
-                    tlp.Controls.Add(new Label() { Text = this.name, AutoSize = true });
+                    tlp.Controls.Add(new Label() { Text = this.Name, AutoSize = true });
                     tlp.Controls.Add(new TextBox() { Dock = DockStyle.Fill });
                     return tlp;
                 default:
@@ -74,26 +100,50 @@ namespace WinFormExtensivel.Plugins
 
     public class State
     {
-        public string id { get; set; }
-        public string type { get; set; }
-        public string desc { get; set; }
-        public string @default { get; set; }
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
+
+        [JsonPropertyName("desc")]
+        public string Desc { get; set; }
+
+        [JsonPropertyName("default")]
+        public string Default { get; set; }
     }
 
     public class Category
     {
-        public string id { get; set; }
-        public string name { get; set; }
-        public List<Action> actions { get; set; }
-        public List<State> states { get; set; }
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("actions")]
+        public List<Action> Actions { get; set; }
+
+        [JsonPropertyName("states")]
+        public List<State> States { get; set; }
     }
     public class PluginEntryPoint
     {
-        public string version { get; set; }
-        public string name { get; set; }
-        public string id { get; set; }
-        public string plugin_start_cmd { get; set; }
-        public List<Category> categories { get; set; }
+ 
+        [JsonPropertyName("version")]
+        public string Version { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("plugin_start_cmd")]
+        public string PluginStartCmd { get; set; }
+
+        [JsonPropertyName("categories")]
+        public List<Category> Categories { get; set; }
 
 
     }

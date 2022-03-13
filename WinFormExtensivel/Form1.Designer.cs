@@ -47,7 +47,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(533, 286);
+            this.button1.Location = new System.Drawing.Point(537, 410);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(132, 73);
             this.button1.TabIndex = 1;
@@ -57,7 +57,7 @@
             // 
             // richTextBox2
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(19, 286);
+            this.richTextBox2.Location = new System.Drawing.Point(23, 410);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.Size = new System.Drawing.Size(497, 73);
             this.richTextBox2.TabIndex = 2;
@@ -74,7 +74,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Location = new System.Drawing.Point(681, 286);
+            this.groupBox2.Location = new System.Drawing.Point(685, 410);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(409, 73);
             this.groupBox2.TabIndex = 6;
@@ -83,29 +83,31 @@
             // 
             // Main
             // 
+            this.Main.AutoSize = true;
             this.Main.BackColor = System.Drawing.Color.RosyBrown;
             this.Main.Location = new System.Drawing.Point(420, 33);
             this.Main.Name = "Main";
-            this.Main.Size = new System.Drawing.Size(305, 216);
+            this.Main.Size = new System.Drawing.Size(305, 356);
             this.Main.TabIndex = 7;
             // 
             // Config
             // 
+            this.Config.AutoSize = true;
             this.Config.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.Config.ColumnCount = 1;
             this.Config.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.Config.Location = new System.Drawing.Point(792, 33);
+            this.Config.Location = new System.Drawing.Point(767, 18);
             this.Config.Name = "Config";
             this.Config.RowCount = 1;
             this.Config.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.Config.Size = new System.Drawing.Size(280, 224);
+            this.Config.Size = new System.Drawing.Size(280, 371);
             this.Config.TabIndex = 8;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1124, 396);
+            this.ClientSize = new System.Drawing.Size(1124, 520);
             this.Controls.Add(this.Config);
             this.Controls.Add(this.Main);
             this.Controls.Add(this.groupBox2);
@@ -117,6 +119,7 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

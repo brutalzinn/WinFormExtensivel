@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WinFormExtensivel.Plugins
 {
-    public class PluginConfig
+    public class PluginAction
     {
         public string ActionId { get; set; }
 

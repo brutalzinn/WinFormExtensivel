@@ -13,6 +13,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinFormExtensivel.Plugins;
+using WinFormExtensivel.Plugins.Models;
 
 namespace WinFormExtensivel
 {
@@ -184,7 +185,7 @@ namespace WinFormExtensivel
 
         private Control PegarControlador(Category categoria)
         {
-            switch (categoria.id.ToLower())
+            switch (categoria.Id.ToLower())
             {
                 case "main":
                     return Main;
@@ -199,6 +200,7 @@ namespace WinFormExtensivel
         
         private void Form1_Load(object sender, EventArgs e)
         {
+
             EscreverLog(richTextBox1, $"Procurando plugins..");
             List<string> dir_plugins = new List<string>();
 
@@ -213,26 +215,28 @@ namespace WinFormExtensivel
                 var config = Directory.GetFiles(file,@"entry.json")[0];
                 string content = File.ReadAllText(config);
                 var json = JsonSerializer.Deserialize<PluginEntryPoint>(content);
-                EscreverLog(richTextBox1, $"{json.name} Carregado..");
+                EscreverLog(richTextBox1, $"{json.Name} Carregado..");
                 pluginsCarregados.Add(json);
             }
+            PluginListConfig.CarregarConfig();
 
             foreach (var plugin in pluginsCarregados)
             {
-                plugin.categories.ForEach(categoria => 
+                plugin.Categories.ForEach(categoria => 
                 {
                     var tlp = new TableLayoutPanel() { Dock = DockStyle.Fill, ColumnCount = 4 };
                     tlp.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                     tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
                     tlp.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                     tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-                    categoria.actions.ForEach(action =>
+
+                    categoria.Actions.ForEach(action =>
                     {
                         var control = action.ObterControle();
                         if (control is Button button)
                         {
                             button.Click += Button_Click;
-                            button.Tag = action;
+                            button.Tag = new PluginTag(plugin, action);
                         }
                         tlp.Controls.Add(control);
                     });
@@ -244,16 +248,13 @@ namespace WinFormExtensivel
         private void Button_Click(object? sender, EventArgs e)
         {
             var button =  (Button)sender;
-            if(button.Tag is Plugins.Action _action)
-            {
-                if (_action.isForm)
-                {
-                    var form = new PluginConfigForm(_action);
+            if(button.Tag is PluginTag _pluginTag && _pluginTag.Action.IsForm)
+            {      
+                    var form = new PluginConfigForm(_pluginTag);
                     form.ShowDialog();
-                    return;
-                }
+                    return;              
             }
-            server.Emit("onAction", JsonSerializer.Serialize(new PluginConfig()
+            server.Emit("onAction", JsonSerializer.Serialize(new PluginAction()
             {
                 ActionId = button.Name,
                 Teste = "MAracutaia da boa."
