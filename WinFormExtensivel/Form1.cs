@@ -16,8 +16,66 @@ namespace WinFormExtensivel
     public partial class Form1 : Form
     {
         private SocketIOServer server { get; set; } = null;
+
+        //TODO: remover isso depois.
+        public class PluginCliente
+        {
+            public string SocketId { get; private set; }
+            public string PluginId { get; private set; }
+
+            public PluginCliente(string socketId, string pluginId)
+            {
+                this.SocketId = socketId;
+                this.PluginId = pluginId;
+            }
+
+            public override bool Equals(object obj)
+            { 
+                if (obj == null)
+                {
+                return false;
+                }
+            
+                if (!(obj is PluginCliente))
+                {
+                return false;
+                }
+                var other = (PluginCliente)obj;
+                return this.SocketId.Equals(other.SocketId);
+            }
+        }
+
+        public List<PluginCliente> pluginClientes = new List<PluginCliente>();
+
+        private void DesconectarPlugin(string socketId)
+        {
+            var plugin = pluginClientes.First(e => e.SocketId.Equals(socketId));
+            pluginClientes.Remove(plugin);
+           
+        }
+        private void ConectarPlugin(string socketId, string pluginId)
+        {
+            if (pluginClientes.Count(e => e.SocketId.Equals(socketId)) == 0)
+            {
+                pluginClientes.Add(new PluginCliente(socketId, pluginId));
+            }
+
+        }
+       //TODO: Esse invoqued required tá muito bruto e jogando memória fora. 
+       //dar uma olhada depois.
+        private void AtualizarPlugins()
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new MethodInvoker(() => AtualizarPlugins()));
+                return;
+            }
+            listBox1.Items.Clear();
+            pluginClientes.ForEach(e => EscreverPlugin(listBox1,e.PluginId));
+        }
         public Form1()
         {
+
             InitializeComponent();
             using (server = new SocketIOServer(new SocketIOServerOption(5555)))
             {
@@ -25,13 +83,17 @@ namespace WinFormExtensivel
 
                 server.OnConnection((socket) =>
                 {
+                   
                     EscreverLog(richTextBox1, "Cliente conectado.");
 
                     socket.On("register", (data) =>
                     {
                         foreach (JToken token in data)
                         {
-                            RegistrarPlugin(token + "");
+                            ConectarPlugin(socket.Socket.SID, token.ToString());
+                            AtualizarPlugins();
+
+                            // RegistrarPlugin(token + "" + socket.Socket.SID);
                         }
                     });
 
@@ -45,12 +107,18 @@ namespace WinFormExtensivel
                         socket.Emit("echo", data);
                     });
 
+                
+
                     socket.On(SocketIOEvent.DISCONNECT, () =>
                     {
-                        EscreverLog(richTextBox1, "Client disconnected!");
+                            EscreverLog(richTextBox1, "Cliente " + socket.Socket.SID + "Desconectado.");
+                            DesconectarPlugin(socket.Socket.SID);
+                            AtualizarPlugins();
                     });
+
                     //emitindo um handshake basicao
                     socket.Emit("connection", new byte[] { 0, 1, 2, 3, 4, 5 });
+                    
                 });
             }
             server.Start();
@@ -70,24 +138,17 @@ namespace WinFormExtensivel
             richText.ScrollToCaret();
         }
 
-        void EscreverPlugin(ListBox listBox, string output)
+        void EscreverPlugin(ListBox listBox, string pluginId)
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new MethodInvoker(() => EscreverPlugin(listBox, output)));
+                BeginInvoke(new MethodInvoker(() => EscreverPlugin(listBox, pluginId)));
                 return;
             }
-            listBox.Items.Add(output);
+            listBox.Items.Add(pluginId);
 
         }
-        private void RegistrarPlugin(string pluginId)
-        {
 
-            EscreverPlugin(listBox1,pluginId);
-            //registrando plugin de teste
-
-
-        }
         private void Form1_Load(object sender, EventArgs e)
         {
          
