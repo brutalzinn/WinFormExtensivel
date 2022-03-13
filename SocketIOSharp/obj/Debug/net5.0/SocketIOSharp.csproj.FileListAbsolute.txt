@@ -1,0 +1,12 @@
+C:\Users\gedeo\OneDrive\Área de Trabalho\SocketIOSharp\SocketIOSharp\bin\Debug\net5.0\SocketIOSharp.deps.json
+C:\Users\gedeo\OneDrive\Área de Trabalho\SocketIOSharp\SocketIOSharp\bin\Debug\net5.0\SocketIOSharp.dll
+C:\Users\gedeo\OneDrive\Área de Trabalho\SocketIOSharp\SocketIOSharp\bin\Debug\net5.0\SocketIOSharp.pdb
+C:\Users\gedeo\OneDrive\Área de Trabalho\SocketIOSharp\SocketIOSharp\obj\Debug\net5.0\SocketIOSharp.csproj.AssemblyReference.cache
+C:\Users\gedeo\OneDrive\Área de Trabalho\SocketIOSharp\SocketIOSharp\obj\Debug\net5.0\SocketIOSharp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gedeo\OneDrive\Área de Trabalho\SocketIOSharp\SocketIOSharp\obj\Debug\net5.0\SocketIOSharp.AssemblyInfoInputs.cache
+C:\Users\gedeo\OneDrive\Área de Trabalho\SocketIOSharp\SocketIOSharp\obj\Debug\net5.0\SocketIOSharp.AssemblyInfo.cs
+C:\Users\gedeo\OneDrive\Área de Trabalho\SocketIOSharp\SocketIOSharp\obj\Debug\net5.0\SocketIOSharp.csproj.CoreCompileInputs.cache
+C:\Users\gedeo\OneDrive\Área de Trabalho\SocketIOSharp\SocketIOSharp\obj\Debug\net5.0\SocketIOSharp.dll
+C:\Users\gedeo\OneDrive\Área de Trabalho\SocketIOSharp\SocketIOSharp\obj\Debug\net5.0\refint\SocketIOSharp.dll
+C:\Users\gedeo\OneDrive\Área de Trabalho\SocketIOSharp\SocketIOSharp\obj\Debug\net5.0\SocketIOSharp.pdb
+C:\Users\gedeo\OneDrive\Área de Trabalho\SocketIOSharp\SocketIOSharp\obj\Debug\net5.0\ref\SocketIOSharp.dll
