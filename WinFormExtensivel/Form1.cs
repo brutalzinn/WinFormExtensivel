@@ -6,10 +6,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinFormExtensivel.Plugins;
 
 namespace WinFormExtensivel
 {
@@ -46,6 +49,9 @@ namespace WinFormExtensivel
         }
 
         public List<PluginCliente> pluginClientes = new List<PluginCliente>();
+
+        public List<PluginEntryPoint> pluginsCarregados = new List<PluginEntryPoint>();
+
 
         private void DesconectarPlugin(string socketId)
         {
@@ -149,11 +155,105 @@ namespace WinFormExtensivel
 
         }
 
+    
+        private void GerarControle(WinFormExtensivel.Plugins.Action action)
+        {
+            //var control = action.ObterControle();
+            //control.Text = action.name;
+            //control.Name = action.id;
+
+     
+            //var tlp = new TableLayoutPanel() { Dock = DockStyle.Fill, ColumnCount = 6 };
+            //tlp.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            //tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            //tlp.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            //tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            //tlp.Controls.Add(control);
+
+            //panel1.Controls.Add(tlp);
+            //foreach (var item in fields)
+            //{
+            //     tlp.Controls.Add(new Label() { Text = item, AutoSize = true });
+          //  }
+            //foreach (var item in fields)
+            //{
+            //    tlp.Controls.Add(new Label() { Text = item, AutoSize = true });
+            //    tlp.Controls.Add(new TextBox() { Dock = DockStyle.Fill });
+            //}
+        }
+
+        private Control PegarControlador(Category categoria)
+        {
+            switch (categoria.id.ToLower())
+            {
+                case "main":
+                    return Main;
+                case "config":
+                    return Config;
+                default:
+                    return null;
+            }
+        }
+        
+
+        
         private void Form1_Load(object sender, EventArgs e)
         {
-         
+            EscreverLog(richTextBox1, $"Procurando plugins..");
+            List<string> dir_plugins = new List<string>();
+
+            Directory.GetDirectories($@"plugins\").ToList().ForEach(x =>
+            {
+                EscreverLog(richTextBox1, $"Carregando plugins..");
+                dir_plugins.Add(x);
+            });
+
+            foreach (string file in dir_plugins)
+            {
+                var config = Directory.GetFiles(file,@"entry.json")[0];
+                string content = File.ReadAllText(config);
+                var json = JsonSerializer.Deserialize<PluginEntryPoint>(content);
+                EscreverLog(richTextBox1, $"{json.name} Carregado..");
+                pluginsCarregados.Add(json);
+            }
 
           
+            foreach (var plugin in pluginsCarregados)
+            {
+                plugin.categories.ForEach(categoria => 
+                {
+                    var tlp = new TableLayoutPanel() { Dock = DockStyle.Fill, ColumnCount = 4 };
+                    tlp.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                    tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+                    tlp.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                    tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+                    categoria.actions.ForEach(data =>
+                    {
+                        var control = data.ObterControle();
+                        if (control is Button button)
+                        {
+                            button.Click += Button_Click;
+                        }
+                        tlp.Controls.Add(control);
+                    });
+                    PegarControlador(categoria).Controls.Add(tlp);
+                });
+                
+            }
+           
+            
+
+        }
+
+        private void Button_Click(object? sender, EventArgs e)
+        {
+            var button =  (Button)sender;
+            server.Emit("onAction", JsonSerializer.Serialize(new PluginConfig()
+            {
+                ActionId = button.Name,
+                Teste = "MAracutaia da boa."
+            }));
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -163,11 +263,6 @@ namespace WinFormExtensivel
             server.Emit("echo", richTextBox2.Text);
           
 
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-           
         }
     }
 }
