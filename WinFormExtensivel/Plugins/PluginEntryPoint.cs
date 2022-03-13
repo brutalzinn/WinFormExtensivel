@@ -16,6 +16,27 @@ namespace WinFormExtensivel.Plugins
         public string type { get; set; }
         public string label { get; set; }
         public string @default { get; set; }
+        public Control ObterControle()
+        {
+            switch (this.type)
+            {
+                case "button":
+                    return new Button()
+                    {
+                        Name = this.id,
+                        Text = this.label,
+                        AutoSize = true
+                    };
+                case "text":
+                    var tlp = new TableLayoutPanel();
+                    tlp.Controls.Add(new Label() { Text = this.label, AutoSize = true });
+                    tlp.Controls.Add(new TextBox() { Dock = DockStyle.Fill,Text = this.@default, Tag = this });
+                    return tlp;
+                default:
+                    return null;
+            }
+        }
+
     }
 
     public class Action
@@ -29,7 +50,6 @@ namespace WinFormExtensivel.Plugins
         public List<Datum> data { get; set; }
         public bool isForm { get; set; }
 
-
         public Control ObterControle()
         {
             switch (this.type)
@@ -42,13 +62,10 @@ namespace WinFormExtensivel.Plugins
                         AutoSize = true
                     };
                 case "text":
-                    return new TextBox()
-                    {
-                        Name = this.id,
-                        Text = this.name,
-                        AutoSize = true
-
-                    };
+                    var tlp = new TableLayoutPanel();
+                    tlp.Controls.Add(new Label() { Text = this.name, AutoSize = true });
+                    tlp.Controls.Add(new TextBox() { Dock = DockStyle.Fill });
+                    return tlp;
                 default:
                     return null;
             }

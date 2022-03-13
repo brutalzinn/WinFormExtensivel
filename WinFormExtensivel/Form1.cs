@@ -217,7 +217,6 @@ namespace WinFormExtensivel
                 pluginsCarregados.Add(json);
             }
 
-          
             foreach (var plugin in pluginsCarregados)
             {
                 plugin.categories.ForEach(categoria => 
@@ -227,27 +226,33 @@ namespace WinFormExtensivel
                     tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
                     tlp.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                     tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-                    categoria.actions.ForEach(data =>
+                    categoria.actions.ForEach(action =>
                     {
-                        var control = data.ObterControle();
+                        var control = action.ObterControle();
                         if (control is Button button)
                         {
                             button.Click += Button_Click;
+                            button.Tag = action;
                         }
                         tlp.Controls.Add(control);
                     });
                     PegarControlador(categoria).Controls.Add(tlp);
                 });
-                
             }
-           
-            
-
         }
 
         private void Button_Click(object? sender, EventArgs e)
         {
             var button =  (Button)sender;
+            if(button.Tag is Plugins.Action _action)
+            {
+                if (_action.isForm)
+                {
+                    var form = new PluginConfigForm(_action);
+                    form.ShowDialog();
+                    return;
+                }
+            }
             server.Emit("onAction", JsonSerializer.Serialize(new PluginConfig()
             {
                 ActionId = button.Name,
