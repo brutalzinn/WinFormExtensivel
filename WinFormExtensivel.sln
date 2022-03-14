@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormExtensivel", "WinFormExtensivel\WinFormExtensivel.csproj", "{FB8E9B8D-50A3-453B-806A-EB5780879C9A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocketIOSharp", "..\..\..\OneDrive\Área de Trabalho\SOCKETIO-SERVER\src\SocketIOSharp\SocketIOSharp.csproj", "{AEE9D9BF-C00C-40E8-A5FC-B83E9778083A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormExtensivel", "WinFormExtensivel\WinFormExtensivel.csproj", "{FB8E9B8D-50A3-453B-806A-EB5780879C9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +21,6 @@ Global
 		{FB8E9B8D-50A3-453B-806A-EB5780879C9A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB8E9B8D-50A3-453B-806A-EB5780879C9A}.Release|x64.ActiveCfg = Release|Any CPU
 		{FB8E9B8D-50A3-453B-806A-EB5780879C9A}.Release|x64.Build.0 = Release|Any CPU
-		{AEE9D9BF-C00C-40E8-A5FC-B83E9778083A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AEE9D9BF-C00C-40E8-A5FC-B83E9778083A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AEE9D9BF-C00C-40E8-A5FC-B83E9778083A}.Debug|x64.ActiveCfg = Debug|x64
-		{AEE9D9BF-C00C-40E8-A5FC-B83E9778083A}.Debug|x64.Build.0 = Debug|x64
-		{AEE9D9BF-C00C-40E8-A5FC-B83E9778083A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AEE9D9BF-C00C-40E8-A5FC-B83E9778083A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AEE9D9BF-C00C-40E8-A5FC-B83E9778083A}.Release|x64.ActiveCfg = Release|x64
-		{AEE9D9BF-C00C-40E8-A5FC-B83E9778083A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -77,12 +77,20 @@ namespace WinFormExtensivel
             {
                 EscreverLog(richTextBox1, "Servidor em " + server.Port);
                 EscreverLog(richTextBox1, "Iniciando servidor..");
+                server.On("input", (data) =>
+                {
+                    foreach (JToken token in data)
+                    {
+                        EscreverLog(richTextBox1, token + " ");
+                    }
 
-            
+                    socket.Emit("echo", data);
+                });
+
                 ////// parte antiga ------
                 //server.OnConnection((socket) =>
                 //{
-                   
+
                 //    EscreverLog(richTextBox1, "Cliente conectado.");
 
                 //    socket.On("register", (data) =>
@@ -106,7 +114,7 @@ namespace WinFormExtensivel
                 //        socket.Emit("echo", data);
                 //    });
 
-                
+
 
                 //    socket.On(SocketIOEvent.DISCONNECT, () =>
                 //    {
@@ -117,45 +125,16 @@ namespace WinFormExtensivel
 
                 //    //emitindo um handshake basicao
                 //    socket.Emit("connection", new byte[] { 0, 1, 2, 3, 4, 5 });
-                    
+
                 //});
                 ////// parte antiga ------
 
             }
+
             server.Start();
         }
 
-        public class TcpChatSession : TcpSession
-        {
-            public TcpChatSession(TcpServer server) : base(server) { }
-
-            private string Message { get; set; }
-
-            protected override void OnConnected()
-            {
-                Debug.WriteLine($"Chat TCP session with Id {Id} connected!");
-                if(Message != null)
-                _form.ConectarPlugin(Id.ToString(), Message);
-                _form.AtualizarPlugins();
-                //RegistrarPlugin(Message);
-            }
-
-            protected override void OnDisconnected()
-            {
-                Debug.WriteLine($"Chat TCP session with Id {Id} disconnected!");
-            }
-
-            protected override void OnReceived(byte[] buffer, long offset, long size)
-            {
-                Message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-
-            }
-
-            protected override void OnError(SocketError error)
-            {
-                Console.WriteLine($"Chat TCP session caught an error with code {error}");
-            }
-        }
+     
 
         void EscreverLog(RichTextBox richText, string output)
         {
