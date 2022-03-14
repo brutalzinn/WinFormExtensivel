@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\OneDrive\Área de Trabalho\SOCKETIO-SERVER\src\SocketIOSharp\SocketIOSharp.csproj" />
+    <None Include="NetCoreServer\NetCoreServer.csproj" />
   </ItemGroup>
 
 </Project>
