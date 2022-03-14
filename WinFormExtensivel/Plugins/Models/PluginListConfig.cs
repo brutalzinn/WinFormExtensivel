@@ -33,13 +33,18 @@ namespace WinFormExtensivel.Plugins.Models
 
         public static void CarregarConfig()
         {
+            if (File.Exists(SAVE_FILE))
+            {
                 string content = File.ReadAllText(SAVE_FILE);
                 Config = JsonSerializer.Deserialize<List<PluginConfig>>(content);
-         
+            }
         }
         public static void SalvarConfig()
         {
-            File.WriteAllText(SAVE_FILE, JsonSerializer.Serialize(Config));
+            if (File.Exists(SAVE_FILE))
+            {
+                File.WriteAllText(SAVE_FILE, JsonSerializer.Serialize(Config));
+            }
         }
 
     }

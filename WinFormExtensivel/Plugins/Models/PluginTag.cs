@@ -12,9 +12,9 @@ namespace WinFormExtensivel.Plugins
 
         public PluginEntryPoint Info { get; set; }
         
-        public Action Action { get;  set; }
+        public Actions Action { get;  set; }
 
-        public PluginTag(PluginEntryPoint info, Action action)
+        public PluginTag(PluginEntryPoint info, Actions action)
         {
             Action = action;
             Info = info;

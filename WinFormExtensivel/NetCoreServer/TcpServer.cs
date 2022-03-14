@@ -1,10 +1,14 @@
-﻿using System;
+﻿using SocketIo.Core.Serializers;
+using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
+using WinFormExtensivel;
+using WinFormExtensivel.Plugins.Message;
 
 namespace NetCoreServer
 {
@@ -14,12 +18,22 @@ namespace NetCoreServer
     /// <remarks>Thread-safe</remarks>
     public class TcpServer : IDisposable
     {
+        private readonly object _lockEmitter = new object();
+
+
+        private BaseEmitter CurrentEmitter;
+
+        private ConcurrentDictionary<string, BaseEmitter> Emitters { get; set; } = new ConcurrentDictionary<string, BaseEmitter>();
+
+        private ISerializer _serializer;
+
+    
         /// <summary>
         /// Initialize TCP server with a given IP address and port number
         /// </summary>
         /// <param name="address">IP address</param>
         /// <param name="port">Port number</param>
-        public TcpServer(IPAddress address, int port) : this(new IPEndPoint(address, port)) {}
+        public TcpServer(IPAddress address, int port) : this(new IPEndPoint(address, port)) {} 
         /// <summary>
         /// Initialize TCP server with a given IP address and port number
         /// </summary>
@@ -42,13 +56,17 @@ namespace NetCoreServer
         /// <param name="endpoint">Endpoint</param>
         /// <param name="address">Server address</param>
         /// <param name="port">Server port</param>
+       
+    
         private TcpServer(EndPoint endpoint, string address, int port)
         {
             Id = Guid.NewGuid();
             Address = address;
             Port = port;
             Endpoint = endpoint;
+            _serializer = (ISerializer)Program.ServiceProvider.GetService(typeof(ISerializer));
         }
+
 
         /// <summary>
         /// Server Id
@@ -437,7 +455,69 @@ namespace NetCoreServer
 
             return true;
         }
+        private void Emit(SocketMessage message)
+        {
+            foreach (var session in Sessions.Values)
+                session.SendAsync(message.Content + " ");
+            
+        }
+        public void Emit<T>(string @event, T message)
+        {
+            var sm = new SocketMessage
+            {
+                Content = message,
+                Event = @event,
+            };
 
+            Emit(sm);
+        }
+
+
+     
+
+        internal void HandleMessage(string message)
+        {
+            var bytes = System.Text.Encoding.UTF8.GetBytes(message);
+            SocketMessage msg = _serializer.Deserialize<SocketMessage>(bytes);
+            if (Emitters.ContainsKey(msg.Event))
+            {
+                lock (_lockEmitter)
+                {
+                    CurrentEmitter = Emitters[msg.Event];
+                    CurrentEmitter.Invoke(msg);
+                    CurrentEmitter = null;
+                }
+            }
+        }
+        internal void HandleMessage(byte[] message)
+        {
+            SocketMessage msg = _serializer.Deserialize<SocketMessage>(message);
+            if (Emitters.ContainsKey(msg.Event))
+            {
+                lock (_lockEmitter)
+                {
+                    CurrentEmitter = Emitters[msg.Event];
+                    CurrentEmitter.Invoke(msg);
+                    CurrentEmitter = null;
+                }
+            }
+        }
+
+        public Emitter On(string @event, Action body)
+        {
+            var e = new Emitter(@event, body);
+            Emitters.TryAdd(e.Event, e);
+
+            return e;
+        }
+
+        public Emitter<T> On<T>(string @event, Action<T> body)
+        {
+            var e = new Emitter<T>(@event, body);
+            Emitters.TryAdd(e.Event, e);
+
+            return e;
+        }
         /// <summary>
         /// Multicast text to all connected clients
         /// </summary>

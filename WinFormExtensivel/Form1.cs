@@ -66,27 +66,22 @@ namespace WinFormExtensivel
             listBox1.Items.Clear();
             pluginClientes.ForEach(e => EscreverPlugin(listBox1,e.PluginId));
         }
-                
+
         public static Form1 _form { get; set; }
         public Form1()
         {
 
             InitializeComponent();
             _form = this;
+    
+
             using (server = new TcpChatServer(IPAddress.Any, 5555))
             {
                 EscreverLog(richTextBox1, "Servidor em " + server.Port);
                 EscreverLog(richTextBox1, "Iniciando servidor..");
-                server.On("input", (data) =>
-                {
-                    foreach (JToken token in data)
-                    {
-                        EscreverLog(richTextBox1, token + " ");
-                    }
 
-                    socket.Emit("echo", data);
-                });
 
+         
                 ////// parte antiga ------
                 //server.OnConnection((socket) =>
                 //{
@@ -130,11 +125,15 @@ namespace WinFormExtensivel
                 ////// parte antiga ------
 
             }
-
+           
             server.Start();
         }
 
-     
+        private void EventoTeste_ThresholdReached(object? sender, EventArgs e)
+        {        
+            var teste = (MessageChannel)e;
+            Debug.WriteLine("Chave:" + teste.Channel + " " + "Valor:" + teste.Value);
+        }
 
         void EscreverLog(RichTextBox richText, string output)
         {
@@ -163,7 +162,7 @@ namespace WinFormExtensivel
         }
 
     
-        private void GerarControle(WinFormExtensivel.Plugins.Action action)
+        private void GerarControle(Actions action)
         {
             //var control = action.ObterControle();
             //control.Text = action.name;

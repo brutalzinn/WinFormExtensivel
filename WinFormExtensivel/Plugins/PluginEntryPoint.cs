@@ -48,7 +48,7 @@ namespace WinFormExtensivel.Plugins
 
     }
 
-    public class Action
+    public class Actions
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
@@ -122,7 +122,7 @@ namespace WinFormExtensivel.Plugins
         public string Name { get; set; }
 
         [JsonPropertyName("actions")]
-        public List<Action> Actions { get; set; }
+        public List<Actions> Actions { get; set; }
 
         [JsonPropertyName("states")]
         public List<State> States { get; set; }

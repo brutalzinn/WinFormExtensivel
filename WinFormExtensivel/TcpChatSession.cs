@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace WinFormExtensivel
 {
@@ -15,17 +16,23 @@ namespace WinFormExtensivel
 
         public TcpChatSession(TcpServer server) : base(server) { }
 
-        private static Dictionary<string, object> Parse(byte[] buffer, long offset, long size)
-        {
-            string jsonStr = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            return JsonSerializer.Deserialize<Dictionary<string, object>>(jsonStr) ?? new Dictionary<string, object>();
-        }
+
+
         protected override void OnConnected()
         {
+          //  Server.Emit("teste", "testando minha mensagem com emit event.");
             Debug.WriteLine($"Chat TCP session with Id {Id} connected!");
             // _form.ConectarPlugin(Id.ToString(), Message);
             //RegistrarPlugin(Message);
+            Server.On("banana", (object data) =>
+            {
+                Debug.WriteLine(data);
+            });
+
+
         }
+
+   
 
         protected override void OnDisconnected()
         {
@@ -34,9 +41,10 @@ namespace WinFormExtensivel
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            // Message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            var teste = Parse(buffer, (int)offset, (int)size);
-
+             string jsonStr = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
+             Server.HandleMessage(jsonStr);
+            //var teste = JsonSerializer.Deserialize<MessageChannel>(jsonStr);
+            //Globals._GlobalEventHandle.OnThresholdReached(teste);
         }
 
 
