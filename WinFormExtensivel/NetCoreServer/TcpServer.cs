@@ -458,7 +458,7 @@ namespace NetCoreServer
         private void Emit(SocketMessage message)
         {
             foreach (var session in Sessions.Values)
-                session.SendAsync(message.Content + " ");
+                session.SendAsync(JsonSerializer.Serialize(message));
             
         }
         public void Emit<T>(string @event, T message)

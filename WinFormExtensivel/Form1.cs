@@ -261,11 +261,11 @@ namespace WinFormExtensivel
             }
             ////// parte antiga ------
 
-            //server.Emit("onAction", JsonSerializer.Serialize(new PluginAction()
-            //{
-            //    ActionId = button.Name,
-            //    Teste = "MAracutaia da boa."
-            //}));
+            server.Emit("onAction", new PluginAction()
+            {
+                ActionId = button.Name,
+                Teste = "MAracutaia da boa."
+            });
 
         }
 
@@ -274,7 +274,7 @@ namespace WinFormExtensivel
             EscreverLog(richTextBox1, $"Enviado:{richTextBox2.Text}");
             ////// parte antiga ------
 
-            //server.Emit("echo", richTextBox2.Text);
+            server.Emit("console", richTextBox2.Text);
           
 
         }
