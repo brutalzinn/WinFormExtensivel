@@ -261,7 +261,7 @@ namespace WinFormExtensivel
             }
             ////// parte antiga ------
 
-            server.Emit("onAction", new PluginAction()
+            server.Emit("OnAction", new PluginAction()
             {
                 ActionId = button.Name,
                 Teste = "MAracutaia da boa."
