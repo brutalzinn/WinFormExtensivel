@@ -15,7 +15,8 @@ namespace WinFormExtensivel.Plugins.Models
 
         public static PluginConfig ObterConfig(string Id)
         {
-            return Config.FirstOrDefault(e => e.Id.Equals(Id));
+            var config = Config.FirstOrDefault(e => e.Id.Equals(Id));
+            return config;
         }
 
         public static void AdicionarConfig(PluginConfig _config)
@@ -41,10 +42,9 @@ namespace WinFormExtensivel.Plugins.Models
         }
         public static void SalvarConfig()
         {
-            if (File.Exists(SAVE_FILE))
-            {
-                File.WriteAllText(SAVE_FILE, JsonSerializer.Serialize(Config));
-            }
+          
+           File.WriteAllText(SAVE_FILE, JsonSerializer.Serialize(Config));
+            
         }
 
     }

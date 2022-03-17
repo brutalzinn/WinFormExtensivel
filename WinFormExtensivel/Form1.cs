@@ -261,8 +261,17 @@ namespace WinFormExtensivel
                             button.Tag = new PluginTag(plugin, action);
                         }
                         tlp.Controls.Add(control);
+                        var config = PluginListConfig.ObterConfig(plugin.Id);
+                        if (config == null)
+                        {
+                            config = new PluginConfig(plugin);
+                            config.Configs = new();
+                        }
+                        action.Data?.ForEach(data => config.Configs.TryAdd(data.Id, data.Default));
+                        PluginListConfig.AdicionarConfig(config);
                     });
                     PegarControlador(categoria).Controls.Add(tlp);
+            
                 });
             }
         }
@@ -270,19 +279,26 @@ namespace WinFormExtensivel
         private void Button_Click(object? sender, EventArgs e)
         {
             var button =  (Button)sender;
-            if(button.Tag is PluginTag _pluginTag && _pluginTag.Action.IsForm)
+            if(button.Tag is PluginTag _pluginTag)
             {      
+                             
+                if (_pluginTag.Action.IsForm)
+                {
                     var form = new PluginConfigForm(_pluginTag);
                     form.ShowDialog();
-                    return;              
-            }
-            ////// parte antiga ------
+                    return;
+                }
+                server.Emit("OnAction", new PluginAction()
+                {
+                    ActionId = button.Name,
+                    Data = PluginListConfig.ObterConfig(_pluginTag?.Info?.Id)?.Configs
+                });
 
-            server.Emit("OnAction", new PluginAction()
-            {
-                ActionId = button.Name,
-                Teste = "MAracutaia da boa."
-            });
+            }
+          
+            ////// parte antiga ------
+          
+
 
         }
 

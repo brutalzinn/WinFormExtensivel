@@ -5,7 +5,7 @@
   "plugin_start_cmd": "python %TP_PLUGIN_FOLDER%PrimeiroPlugin\\plugin.py",
   "categories": [
     {
-      "id": "Main",
+      "id": "Config",
       "name": "Dev Utils",
       "actions": [
         {

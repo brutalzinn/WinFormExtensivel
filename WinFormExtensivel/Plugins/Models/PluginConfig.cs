@@ -20,6 +20,10 @@ namespace WinFormExtensivel.Plugins
         {
             Id = _pluginTag.Info.Id;
         }
+        public PluginConfig(PluginEntryPoint _pluginTag)
+        {
+            Id = _pluginTag.Id;
+        }
         public PluginConfig()
         {
 

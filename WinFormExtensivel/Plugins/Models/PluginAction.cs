@@ -10,6 +10,6 @@ namespace WinFormExtensivel.Plugins
     {
         public string ActionId { get; set; }
 
-        public string Teste { get; set; } 
+        public object Data { get; set; } 
     }
 }
