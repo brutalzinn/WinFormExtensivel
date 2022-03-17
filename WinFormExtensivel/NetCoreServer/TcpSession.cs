@@ -120,6 +120,7 @@ namespace NetCoreServer
 
             // Call the session connecting handler
             OnConnecting();
+            Server.DispatchInternalEvent("OnConnecting", null);
 
             // Call the session connecting handler in the server
             Server.OnConnectingInternal(this);
@@ -136,10 +137,10 @@ namespace NetCoreServer
 
             // Call the session connected handler
             OnConnected();
-
+            
             // Call the session connected handler in the server
             Server.OnConnectedInternal(this);
-
+            Server.DispatchInternalEvent("OnConnected", this);
             // Call the empty send buffer handler
             if (_sendBufferMain.IsEmpty)
                 OnEmpty();
@@ -163,6 +164,8 @@ namespace NetCoreServer
 
             // Call the session disconnecting handler in the server
             Server.OnDisconnectingInternal(this);
+
+            Server.DispatchInternalEvent("OnDisconnecting", this);
 
             try
             {

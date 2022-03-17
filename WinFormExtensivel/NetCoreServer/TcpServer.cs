@@ -473,8 +473,24 @@ namespace NetCoreServer
         }
 
 
-     
 
+        internal void DispatchInternalEvent(string @event, object content)
+        {
+            var msg = new SocketMessage()
+            {
+                Content = content,
+                Event = @event
+            };
+            if (Emitters.ContainsKey(msg.Event))
+            {
+                lock (_lockEmitter)
+                {
+                    CurrentEmitter = Emitters[msg.Event];
+                    CurrentEmitter.Invoke(msg);
+                    CurrentEmitter = null;
+                }
+            }
+        }
         internal void HandleMessage(string message)
         {
             var bytes = System.Text.Encoding.UTF8.GetBytes(message);

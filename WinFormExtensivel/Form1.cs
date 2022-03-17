@@ -79,14 +79,26 @@ namespace WinFormExtensivel
             {
                 EscreverLog(richTextBox1, "Servidor em " + server.Port);
                 EscreverLog(richTextBox1, "Iniciando servidor..");
+                server.On("OnConnected", (object data) =>
+                {
+                    Debug.WriteLine("conectado");
+                  
+                });
+
                 server.On("register", (object data) =>
                 {
                     Debug.WriteLine(data);
                     ConectarPlugin(server.Id.ToString(), data.ToString());
                     AtualizarPlugins();
                 });
+                //adicionar em constantes depois.
+                server.On("OnDisconnecting", (object data) =>
+                {
+                    EscreverLog(richTextBox1, "Cliente " + server.Id.ToString() + "Desconectado.");
+                    DesconectarPlugin(server.Id.ToString());
+                    AtualizarPlugins();
 
-
+                });
                 ////// parte antiga ------
                 //server.OnConnection((socket) =>
                 //{
