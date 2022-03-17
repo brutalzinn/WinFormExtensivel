@@ -489,6 +489,20 @@ namespace NetCoreServer
                 }
             }
         }
+        internal void HandleMessage(byte[] buffer, int offset, long size)
+        {
+            SocketMessage msg = _serializer.Deserialize<SocketMessage>(buffer, offset, (int)size);
+            if (Emitters.ContainsKey(msg.Event))
+            {
+                lock (_lockEmitter)
+                {
+                    CurrentEmitter = Emitters[msg.Event];
+                    CurrentEmitter.Invoke(msg);
+                    CurrentEmitter = null;
+                }
+            }
+        }
+
         internal void HandleMessage(byte[] message)
         {
             SocketMessage msg = _serializer.Deserialize<SocketMessage>(message);

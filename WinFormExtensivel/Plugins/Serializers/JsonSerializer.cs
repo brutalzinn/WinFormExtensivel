@@ -18,6 +18,14 @@ namespace SocketIo.Core.Serializers
 			return obj;
 		}
 
+		public T Deserialize<T>(byte[] array, int offSet, long size)
+		{
+			string json = System.Text.Encoding.UTF8.GetString(array, offSet, (int)size);
+			T obj = JsonSerializer.Deserialize<T>(json, SETTINGS);
+
+			return obj;
+		}
+
 		public byte[] Serialize<T>(T obj)
 		{
 			string json = JsonSerializer.Serialize(obj, SETTINGS);

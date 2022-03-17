@@ -73,15 +73,20 @@ namespace WinFormExtensivel
 
             InitializeComponent();
             _form = this;
-    
+
 
             using (server = new TcpChatServer(IPAddress.Any, 5555))
             {
                 EscreverLog(richTextBox1, "Servidor em " + server.Port);
                 EscreverLog(richTextBox1, "Iniciando servidor..");
+                server.On("register", (object data) =>
+                {
+                    Debug.WriteLine(data);
+                    ConectarPlugin(server.Id.ToString(), data.ToString());
+                    AtualizarPlugins();
+                });
 
 
-         
                 ////// parte antiga ------
                 //server.OnConnection((socket) =>
                 //{

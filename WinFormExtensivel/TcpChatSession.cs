@@ -24,13 +24,15 @@ namespace WinFormExtensivel
             Debug.WriteLine($"Chat TCP session with Id {Id} connected!");
             // _form.ConectarPlugin(Id.ToString(), Message);
             //RegistrarPlugin(Message);
-            Server.On("banana", (object data) =>
-            {
-                Debug.WriteLine(data);
-            });
+            //Server.On("register", (object data) =>
+            //{
+            //    Debug.WriteLine(data);
+
+            //});
 
 
-        }
+
+            }
 
    
 
@@ -41,8 +43,14 @@ namespace WinFormExtensivel
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-             string jsonStr = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-             Server.HandleMessage(jsonStr);
+            // string jsonStr = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
+           // Server.HandleMessage(buffer, (int)offset, (int)size);
+            //Server.On("teste", (object data) =>
+            //{
+            //    Debug.WriteLine(data);
+
+            //});
+            //Server.HandleMessage(jsonStr);
             //var teste = JsonSerializer.Deserialize<MessageChannel>(jsonStr);
             //Globals._GlobalEventHandle.OnThresholdReached(teste);
         }

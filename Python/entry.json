@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0.0",
+  "name": "Primeiro Plugin",
+  "id": "PrimeiroPlugin",
+  "plugin_start_cmd": "python %TP_PLUGIN_FOLDER%PrimeiroPlugin\\plugin.py",
+  "categories": [
+    {
+      "id": "Main",
+      "name": "Dev Utils",
+      "actions": [
+        {
+          "id": "OpenGitBash",
+          "name": "Abrir Git teste",
+          "prefix": "plugin",
+          "type": "button",
+          "tryInline": true,
+          "isForm": true,
+          "format": "Abrir git {$CONFIG_DIR$}",
+          "data": [
+            {
+              "id": "CONFIG_PRIMEIRO",
+              "type": "text",
+              "label": "Digite o nome do seu cachorro",
+              "default": "texto de default"
+            }
+          ]
+        },
+        {
+          "id": "MAracutaia",
+          "name": "Abrir maracutaia",
+          "prefix": "plugin",
+          "type": "button",
+          "tryInline": true,
+          "isForm": false,
+          "format": "Abrir maracutaia {$CONFIG_DIR$}",
+          "data": [
+            {
+              "id": "CONFIG_MARACUTAIA",
+              "type": "text",
+              "label": "Digite o nome do seu cachorro",
+              "default": "texto de default"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -554,6 +554,7 @@ namespace NetCoreServer
 
                 // Call the buffer received handler
                 OnReceived(_receiveBuffer.Data, 0, size);
+                Server.HandleMessage(_receiveBuffer.Data, 0, size);
 
                 // If the receive buffer is full increase its size
                 if (_receiveBuffer.Capacity == size)
@@ -621,6 +622,7 @@ namespace NetCoreServer
 
                 // Call the buffer sent handler
                 OnSent(size, BytesPending + BytesSending);
+               
             }
 
             // Try to send again if the session is valid
